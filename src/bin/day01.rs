@@ -43,7 +43,6 @@ fn solve_part2(input: &str) -> i32 {
     }
 
     l.sort();
-    r.sort();
 
     let mut map: HashMap<i32, i32> = HashMap::new();
 
