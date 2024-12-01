@@ -1,3 +1,5 @@
+use std::collections::HashMap;
+
 use aoc2024::utils;
 
 fn main() {
@@ -43,14 +45,15 @@ fn solve_part2(input: &str) -> i32 {
     l.sort();
     r.sort();
 
+    let mut map: HashMap<i32, i32> = HashMap::new();
+
+    for num in r.iter() {
+        *map.entry(*num).or_insert(0) += 1;
+    }
+
     let mut similarity_score = 0;
     for left in l.iter() {
-        let mut count = 0;
-        for right in r.iter() {
-            if left == right {
-                count += 1;
-            }
-        }
+        let count = *map.get(left).unwrap_or(&0);
         similarity_score += left * count;
     }
 
@@ -59,8 +62,6 @@ fn solve_part2(input: &str) -> i32 {
 
 #[cfg(test)]
 mod tests {
-    use super::*;
-
     const SAMPLE_INPUT: &str = r"3   4
     4   3
     2   5
