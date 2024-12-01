@@ -56,3 +56,27 @@ fn solve_part2(input: &str) -> i32 {
 
     similarity_score
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    const SAMPLE_INPUT: &str = r"3   4
+    4   3
+    2   5
+    1   3
+    3   9
+    3   3";
+
+    #[test]
+    fn part1() {
+        let result = super::solve_part1(SAMPLE_INPUT);
+        assert_eq!(result, 11)
+    }
+
+    #[test]
+    fn part2() {
+        let result = super::solve_part2(SAMPLE_INPUT);
+        assert_eq!(result, 31)
+    }
+}
