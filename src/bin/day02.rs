@@ -8,58 +8,42 @@ fn main() {
 }
 
 fn solve_part1(input: &str) -> i32 {
-    let mut safe_count = 0;
-
-    for line in input.lines() {
-        let mut levels: Vec<i32> = Vec::new();
-        let parts: Vec<&str> = line.split_whitespace().collect();
-
-        for part in parts.iter() {
-            levels.push(part.parse::<i32>().unwrap())
-        }
-
-        if is_safe(&levels) {
-            safe_count += 1;
-            continue;
-        }
-    }
-
-    safe_count
+    input
+        .lines()
+        .filter(|line| {
+            let levels: Vec<i32> = line
+                .split_whitespace()
+                .map(|part| part.parse::<i32>().unwrap())
+                .collect();
+            is_safe(&levels)
+        })
+        .count() as i32
 }
 
 fn solve_part2(input: &str) -> i32 {
-    let mut safe_count = 0;
+    input
+        .lines()
+        .filter(|line| {
+            let levels: Vec<i32> = line
+                .split_whitespace()
+                .map(|part| part.parse::<i32>().unwrap())
+                .collect();
 
-    for line in input.lines() {
-        let mut levels: Vec<i32> = Vec::new();
-        let parts: Vec<&str> = line.split_whitespace().collect();
-
-        for part in parts.iter() {
-            levels.push(part.parse::<i32>().unwrap())
-        }
-
-        if is_safe(&levels) {
-            safe_count += 1;
-            continue;
-        }
-
-        let mut dampener = false;
-
-        for i in 0..levels.len() {
-            let mut tmp = levels.clone();
-            tmp.remove(i);
-            if is_safe(&tmp) {
-                dampener = true;
-                break;
+            if is_safe(&levels) {
+                return true;
             }
-        }
 
-        if dampener {
-            safe_count += 1;
-        }
-    }
+            for i in 0..levels.len() {
+                let mut tmp = levels.clone();
+                tmp.remove(i);
+                if is_safe(&tmp) {
+                    return true;
+                }
+            }
 
-    safe_count
+            false
+        })
+        .count() as i32
 }
 
 fn is_safe(levels: &Vec<i32>) -> bool {
