@@ -10,53 +10,48 @@ fn main() {
 }
 
 fn solve_part1(input: &str) -> i32 {
-    let mut l: Vec<i32> = Vec::new();
-    let mut r: Vec<i32> = Vec::new();
-
-    for line in input.lines() {
-        let parts: Vec<&str> = line.split_whitespace().collect();
-
-        l.push(parts[0].parse::<i32>().unwrap());
-        r.push(parts[1].parse::<i32>().unwrap());
-    }
+    let (mut l, mut r): (Vec<i32>, Vec<i32>) = input
+        .lines()
+        .map(|line| {
+            let mut parts = line.split_whitespace();
+            (
+                parts.next().unwrap().parse::<i32>().unwrap(),
+                parts.next().unwrap().parse::<i32>().unwrap(),
+            )
+        })
+        .unzip();
 
     l.sort();
     r.sort();
 
-    let mut total_distance = 0;
-    for (left, right) in l.iter().zip(r.iter()) {
-        total_distance += (left - right).abs()
-    }
-
-    total_distance
+    l.iter()
+        .zip(r.iter())
+        .map(|(left, right)| (left - right).abs())
+        .sum()
 }
 
 fn solve_part2(input: &str) -> i32 {
-    let mut l: Vec<i32> = Vec::new();
-    let mut r: Vec<i32> = Vec::new();
-
-    for line in input.lines() {
-        let parts: Vec<&str> = line.split_whitespace().collect();
-
-        l.push(parts[0].parse::<i32>().unwrap());
-        r.push(parts[1].parse::<i32>().unwrap());
-    }
+    let (mut l, r): (Vec<i32>, Vec<i32>) = input
+        .lines()
+        .map(|line| {
+            let mut parts = line.split_whitespace();
+            (
+                parts.next().unwrap().parse::<i32>().unwrap(),
+                parts.next().unwrap().parse::<i32>().unwrap(),
+            )
+        })
+        .unzip();
 
     l.sort();
 
     let mut map: HashMap<i32, i32> = HashMap::new();
-
     for num in r.iter() {
         *map.entry(*num).or_insert(0) += 1;
     }
 
-    let mut similarity_score = 0;
-    for left in l.iter() {
-        let count = *map.get(left).unwrap_or(&0);
-        similarity_score += left * count;
-    }
-
-    similarity_score
+    l.iter()
+        .map(|left| left * map.get(&left).unwrap_or(&0))
+        .sum()
 }
 
 #[cfg(test)]
