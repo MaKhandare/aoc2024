@@ -8,77 +8,50 @@ fn main() {
     println!("Part 2: {}", solve_part2(&input));
 }
 
-// TODO: regex maybe? because WTF have i done
+// REGEX!
+// check for mul(x,y), where x and y have 1-3 digits
+// the digits are in groups. get groups with captures[1] and captures[2]
 
 fn solve_part1(input: &str) -> i32 {
     let mut total = 0;
-    let mut chars = input.chars().peekable();
+    let re = Regex::new(r"mul\((\d{1,3}),(\d{1,3})\)").unwrap();
 
-    while let Some(c) = chars.next() {
-        if c == 'm'
-            && chars.next() == Some('u')
-            && chars.next() == Some('l')
-            && chars.next() == Some('(')
-        {
-            let mut num1 = String::new();
-            let mut num2 = String::new();
-            let mut comma_found = false;
-
-            while let Some(&next) = chars.peek() {
-                if next.is_digit(10) {
-                    if !comma_found {
-                        num1.push(chars.next().unwrap());
-                    } else {
-                        num2.push(chars.next().unwrap());
-                    }
-                } else if next == ',' {
-                    if comma_found {
-                        break;
-                    }
-                    comma_found = true;
-                    chars.next();
-                } else if next == ')' {
-                    chars.next();
-
-                    if !num1.is_empty() && !num2.is_empty() {
-                        let x = num1.parse::<i32>().unwrap();
-                        let y = num2.parse::<i32>().unwrap();
-                        total += x * y;
-                    }
-                    break;
-                } else {
-                    break;
-                }
-            }
-        }
+    for captures in re.captures_iter(input) {
+        let x: i32 = captures[1].parse().unwrap();
+        let y: i32 = captures[2].parse().unwrap();
+        total += x * y;
     }
 
     total
 }
 
-// TODO: regex crate. not sure if this the proper way to handle this?
-// ask rust ment. then refac part 1
+// REGEX!
+// check for do(), don't() and mul(x,y)
+// if do() enable mul
+// if don't() disable mul
+// mul stays the same essentially
 
 fn solve_part2(input: &str) -> i32 {
-    let p = Regex::new(r"mul\((\d+),(\d+)\)|(do|don't)\(\)").unwrap();
-
     let mut total = 0;
     let mut mul_enabled = true;
 
-    for line in input.lines() {
-        for cap in p.captures_iter(line) {
-            if let Some(mul_group) = cap.get(0) {
-                let mul_str = mul_group.as_str();
+    let re = Regex::new(r"do\(\)|don't\(\)|mul\((\d{1,3}),(\d{1,3})\)").unwrap();
 
-                if mul_str.starts_with("mul") {
-                    let x: i32 = cap[1].parse().unwrap();
-                    let y: i32 = cap[2].parse().unwrap();
-                    if mul_enabled {
-                        total += x * y;
-                    }
-                } else {
-                    mul_enabled = !cap[0].starts_with("don't");
+    for captures in re.captures_iter(input) {
+        if let Some(command) = captures.get(0) {
+            match command.as_str() {
+                "do()" => {
+                    mul_enabled = true;
                 }
+                "don't()" => {
+                    mul_enabled = false;
+                }
+                _ if mul_enabled => {
+                    let x: i32 = captures[1].parse().unwrap();
+                    let y: i32 = captures[2].parse().unwrap();
+                    total += x * y;
+                }
+                _ => {}
             }
         }
     }
