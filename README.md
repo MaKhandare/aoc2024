@@ -2,8 +2,23 @@
 
 unwrap unwrap unwrap unwrwpa urnwaurnwaprwapwraunwarawrp everything!
 
-- day02: i could use expect with proper error messages instead of unwrap, right?... it's fiiiiiine.
+## Day 02
 
-- day03: i need to learn regex lol
+I probably could use `expect()` with proper error messages, instead of `unwrap()`. But meh, it's fine.
 
-- day04: part 2 felt easier, than part 1. only need to check for 'A' and then the neighbors. need to find a pretty solution for part 1, because i just did 8 loops lol
+
+## Day 03
+
+I need to learn RegEx lol.
+
+Mentor taught me the basics.
+
+
+## Day 04
+
+Part 2 felt easier than part 1. 
+
+Only need to find an `'A'` and then check the neighbors. 
+
+Still not happy with my Part 1, because it's just a for loop for every of the 8 directions. Maybe I'll come back to that.
+
