@@ -95,7 +95,33 @@ fn solve_part1(input: &str) -> i32 {
 }
 
 fn solve_part2(input: &str) -> i32 {
-    0
+    let grid: Vec<Vec<char>> = input.lines().map(|line| line.chars().collect()).collect();
+
+    let rows = grid.len();
+    let cols = grid[0].len();
+
+    let mut count = 0;
+
+    for row in 1..(rows - 1) {
+        for col in 1..(cols - 1) {
+            if grid[row][col] == 'A' {
+                let top_left = grid[row - 1][col - 1];
+                let top_right = grid[row - 1][col + 1];
+                let bot_right = grid[row + 1][col + 1];
+                let bot_left = grid[row + 1][col - 1];
+
+                if (top_left == 'M' && bot_right == 'S') || (top_left == 'S' && bot_right == 'M') {
+                    if (top_right == 'M' && bot_left == 'S')
+                        || (top_right == 'S' && bot_left == 'M')
+                    {
+                        count += 1;
+                    }
+                }
+            }
+        }
+    }
+
+    count
 }
 #[cfg(test)]
 mod tests {
