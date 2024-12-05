@@ -22,6 +22,8 @@ Only need to find an `'A'` and then check the neighbors.
 
 Still not happy with my Part 1, because it's just a for loop for every of the 8 directions. Maybe I'll come back to that.
 
+Update: I did come back to that. Instead of having 8 for loops, I now have a direction array and iterate over that.
+
 
 ## Day 05
 
