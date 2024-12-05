@@ -7,90 +7,45 @@ fn main() {
     println!("Part 2: {}", solve_part2(&input));
 }
 
-// TODO: there has to be a more elegant way
-
 fn solve_part1(input: &str) -> i32 {
     let grid: Vec<Vec<char>> = input.lines().map(|line| line.chars().collect()).collect();
 
-    let rows = grid.len();
-    let cols = grid[0].len();
-
-    let target = ['X', 'M', 'A', 'S'];
+    let rows = grid.len() as isize;
+    let cols = grid[0].len() as isize;
 
     let mut count = 0;
+    let target = ['X', 'M', 'A', 'S'];
 
-    // left to right
+    // yx
+    let directions = [
+        (0, 1),   // left to right
+        (0, -1),  // right to left
+        (1, 0),   // top to bot
+        (-1, 0),  // bot to top
+        (1, 1),   // topleft to botright
+        (1, -1),  // topright to botleft
+        (-1, -1), // botright to topleft
+        (-1, 1),  // botleft to topright
+    ];
+
     for row in 0..rows {
-        for col in 0..=(cols - 4) {
-            if grid[row][col..col + 4] == target {
-                count += 1
+        for col in 0..cols {
+            for (dy, dx) in directions {
+                if (0..4).all(|i| {
+                    let new_row = row + i * dy;
+                    let new_col = col + i * dx;
+
+                    new_row >= 0
+                        && new_col >= 0
+                        && new_row < rows
+                        && new_col < cols
+                        && grid[new_row as usize][new_col as usize] == target[i as usize]
+                }) {
+                    count += 1;
+                }
             }
         }
     }
-
-    // top to bottom
-    for col in 0..cols {
-        for row in 0..=(rows - 4) {
-            if (0..4).all(|i| grid[row + i][col] == target[i]) {
-                count += 1
-            }
-        }
-    }
-
-    // diag top left to bot right
-    for row in 0..=(rows - 4) {
-        for col in 0..=(cols - 4) {
-            if (0..4).all(|i| grid[row + i][col + i] == target[i]) {
-                count += 1
-            }
-        }
-    }
-
-    // diag top right to bot left
-    for row in 0..=(rows - 4) {
-        for col in 3..cols {
-            if (0..4).all(|i| grid[row + i][col - i] == target[i]) {
-                count += 1;
-            }
-        }
-    }
-
-    // right to left
-    for row in 0..rows {
-        for col in 3..cols {
-            if grid[row][col - 3..=col].iter().rev().eq(target.iter()) {
-                count += 1;
-            }
-        }
-    }
-
-    // bot to top
-    for col in 0..cols {
-        for row in 3..rows {
-            if (0..4).all(|i| grid[row - i][col] == target[i]) {
-                count += 1;
-            }
-        }
-    }
-
-    // diag bot right to top left
-    for row in 3..rows {
-        for col in 3..cols {
-            if (0..4).all(|i| grid[row - i][col - i] == target[i]) {
-                count += 1;
-            }
-        }
-    }
-
-    // diag bot left to top right
-    for row in 3..rows {
-        for col in 0..=(cols - 4) {
-            if (0..4).all(|i| grid[row - i][col + i] == target[i]) {
-                count += 1;
-            }
-        }
-    }
-
     count
 }
 
