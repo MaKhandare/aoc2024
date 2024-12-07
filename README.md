@@ -35,3 +35,9 @@ Other than that, I realized that I still have this imperative mindset. I should 
 ## Day 06
 
 At this point my code gets uglier and uglier. I am not satisfied. I need to start working with structs and/or extract some things into functions.
+
+Also, for part 2, I had to use the `--release` flag for the first time, because it was too slow otherwise lol. Took about 5 seconds.
+
+## Day 07
+
+Recursion! Had some hiccups with my base case. But it worked out
