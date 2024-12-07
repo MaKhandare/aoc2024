@@ -36,7 +36,7 @@ Other than that, I realized that I still have this imperative mindset. I should 
 
 At this point my code gets uglier and uglier. I am not satisfied. I need to start working with structs and/or extract some things into functions.
 
-Also, for part 2, I had to use the `--release` flag for the first time, because it was too slow otherwise lol. Took about 5 seconds.
+Also, for part 2, I had to use the `--release` flag for the first time, because it was too slow otherwise. Took about 5 seconds. That's because I am doing something terrible. Trying to place an obstacle everywhere per run, then iterate over it 100k times. If he's still there, then it's a loop lol..
 
 ## Day 07
 
